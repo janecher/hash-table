@@ -7,25 +7,34 @@
 // All the main methods of a hash table rely on the hashing algorithm, whether that's methods to add, look up, or remove key-value pairs.
 
 export default class HashTable {
-    constructor() {
-      this.array = [];
+    //size will be prime too
+    constructor(size = 51) {
+      this.keyMap = new Array(size);
     }
 
+    //another example of hash function
     hash(key) {
-      return key.charAt(0).toLowerCase().charCodeAt(0) - 97;
+        let total = 0;
+        //here can be other prime number - prime numbers very helpfull with collisions
+        let prime = 31;
+        for(let i =0; i < Math.min(key.length, 100); i++) {
+            let value = key[i].charCodeAt(0)-96;
+            total = (total*prime+value)%this.keyMap.length;
+        }
+        return total;
     }
 
     set(key, value) {
       const index = this.hash(key);
-      if (this.array[index] === undefined) {
-        this.array[index] = []
+      if (this.keyMap[index] === undefined) {
+        this.keyMap[index] = []
       }
-      this.array[index].push([key, value]);
+      this.keyMap[index].push([key, value]);
     }
 
     get(key) {
       const element = this.hash(key);
-      const bucket = this.array[element];
+      const bucket = this.keyMap[element];
       if (bucket != undefined) {
         for (let i = 0; i < bucket.length; i++) {
           if (bucket[i][0] === key) {
