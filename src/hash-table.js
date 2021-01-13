@@ -33,9 +33,9 @@ export default class HashTable {
     }
 
     get(key) {
-      const element = this.hash(key);
-      const bucket = this.keyMap[element];
-      if (bucket != undefined) {
+      const index = this.hash(key);
+      const bucket = this.keyMap[index];
+      if (bucket) {
         for (let i = 0; i < bucket.length; i++) {
           if (bucket[i][0] === key) {
             return bucket[i][1];
@@ -43,5 +43,33 @@ export default class HashTable {
         }
       }
       return null;
+    }
+
+    keys() {
+        let keysArray = [];
+        for(let i=0; i<this.keyMap.length; i++) {
+            if(this.keyMap[i]) {
+                for(let j=0; j<this.keyMap[i].length; j++) {
+                    if(!keysArray.includes(this.keyMap[i][j][1])) {
+                        keysArray.push(this.keyMap[i][j][1]);
+                    }
+                }
+            }
+        }
+        return keysArray;
+    }
+
+    values() {
+        let valuesArray = [];
+        for(let i=0; i<this.keyMap.length; i++) {
+            if(this.keyMap[i]) {
+                for(let j=0; j<this.keyMap[i].length; j++) {
+                    if(!valuesArray.includes(this.keyMap[i][j][1])) {
+                        valuesArray.push(this.keyMap[i][j][1]);
+                    }
+                }
+            }
+        }
+        return valuesArray; 
     }
   }
